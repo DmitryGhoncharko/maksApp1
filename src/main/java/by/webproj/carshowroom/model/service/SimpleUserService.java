@@ -44,7 +44,16 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public Optional<User> registrationUser(String login, String password) {
-        return Optional.empty();
+    public boolean registrationUser(String login, String password) {
+        if(!userValidator.validateUserDataByLoginAndPassword(login,password)){
+            return false;
+        }
+        try{
+            final  String hashedPassword = passwordHasher.hashPassword(password);
+            return  userDao.addUser(login,hashedPassword);
+        }catch (DaoException e ){
+            LOG.error("Cannot add user by login and password, login = "  + login + " password = "  + password);
+            throw new ServiceError("Cannot add user by login and password, login = "  + login + " password = "  + password);
+        }
     }
 }
