@@ -207,7 +207,7 @@
                     <button type="submit" class="btn btn-default">Войти</button>
                         </div>
                         <div class="col-md-6">
-                        <a class="btn btn-default" href="/controller?command = main_page">На главную</a>
+                        <a class="btn btn-default" href="/controller?command = registration">Зарегистрироваться</a>
                         </div>
                         </div>
                     </div>
