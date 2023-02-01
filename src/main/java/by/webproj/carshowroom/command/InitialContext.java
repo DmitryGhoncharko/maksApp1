@@ -34,12 +34,8 @@ public class InitialContext {
                 return new ShowRegistrationPageCommand(simpleRequestFactory);
             case "registrationcmnd":
                 return new RegistrationCommand(simpleUserService, simpleRequestFactory);
-            case "updateCar":
-                return new ShowUpdateCarPageCommand(simpleCarService, simpleRequestFactory);
-            case "updateCarCommand":
-                return new UpdateCarCommand(simpleCarService, simpleRequestFactory);
             default:
-                return new ShowMainPageCommand(simpleRequestFactory);
+                return new ShowLoginPageCommand(simpleRequestFactory);
         }
 
     }
