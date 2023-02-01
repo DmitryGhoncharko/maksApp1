@@ -195,19 +195,13 @@
                         Пароль должен быть минимум шесть символов, пароль должен содержать буквы цифры и спец символы
                     </div>
                 </div>
-                <div class="form-group help">
-                    <input type="password" name="secretcode" class="form-control needs-validation"  placeholder="Секретный код" required>
-                    <div class="invalid-feedback">
-                        Ожидается секретный код ...
-                    </div>
-                </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-default">Зарегистрироваться</button>
                         </div>
                         <div class="col-md-6">
-                            <a class="btn btn-default" href="/controller?command = main_page">На главную</a>
+                            <a class="btn btn-default" href="/controller?command=main_page">На главную</a>
                         </div>
                     </div>
                 </div>
