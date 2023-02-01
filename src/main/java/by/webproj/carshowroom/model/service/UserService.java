@@ -1,13 +1,13 @@
 package by.webproj.carshowroom.model.service;
 
-import by.webproj.carshowroom.entity.User;
+import by.webproj.carshowroom.entity.UserEntity;
 
 import java.util.Optional;
 
 public interface UserService {
 
 
-    Optional<User> loginUser(String login, String password);
+    Optional<UserEntity> loginUser(String login, String password);
 
    boolean registrationUser(String login, String password);
 

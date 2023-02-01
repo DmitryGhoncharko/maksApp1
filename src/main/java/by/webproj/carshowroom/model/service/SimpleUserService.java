@@ -1,6 +1,6 @@
 package by.webproj.carshowroom.model.service;
 
-import by.webproj.carshowroom.entity.User;
+import by.webproj.carshowroom.entity.UserEntity;
 import by.webproj.carshowroom.exception.DaoException;
 import by.webproj.carshowroom.exception.ServiceError;
 
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Optional;
 @RequiredArgsConstructor
 public class SimpleUserService implements UserService {
@@ -22,15 +21,15 @@ public class SimpleUserService implements UserService {
 
 
     @Override
-    public Optional<User> loginUser(String login, String password) {
+    public Optional<UserEntity> loginUser(String login, String password) {
         if (!userValidator.validateUserDataByLoginAndPassword(login, password)) {
             return Optional.empty();
         }
         try {
 
-            final Optional<User> userFromDB = userDao.findUserByLogin(login);
+            final Optional<UserEntity> userFromDB = userDao.findUserByLogin(login);
             if (userFromDB.isPresent()) {
-                final User userInstance = userFromDB.get();
+                final UserEntity userInstance = userFromDB.get();
                 final String hashedPasswordFromDB = userInstance.getPassword();
                 if (passwordHasher.checkIsEqualsPasswordAndPasswordHash(password, hashedPasswordFromDB)) {
                     return userFromDB;

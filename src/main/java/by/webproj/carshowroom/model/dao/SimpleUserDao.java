@@ -1,7 +1,7 @@
 package by.webproj.carshowroom.model.dao;
 
 
-import by.webproj.carshowroom.entity.User;
+import by.webproj.carshowroom.entity.UserEntity;
 import by.webproj.carshowroom.exception.DaoException;
 import by.webproj.carshowroom.model.connection.ConnectionPool;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class SimpleUserDao implements UserDao {
 
 
     @Override
-    public Optional<User> findUserByLogin(String login) throws DaoException {
+    public Optional<UserEntity> findUserByLogin(String login) throws DaoException {
         try (final Connection connection = connectionPool.getConnection(); final PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
             final ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(new User.Builder().withUserId(resultSet.getLong(1)).withUserLogin(resultSet.getString(2)).withUserPassword(resultSet.getString(3)).build());
+                return Optional.of(new UserEntity.Builder().withUserId(resultSet.getLong(1)).withUserLogin(resultSet.getString(2)).withUserPassword(resultSet.getString(3)).build());
             }
         } catch (SQLException sqlException) {
             LOG.error("Cannot find user by login, login: " + login, sqlException);

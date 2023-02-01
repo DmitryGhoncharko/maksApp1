@@ -2,13 +2,13 @@ package by.webproj.carshowroom.entity;
 
 import java.util.Objects;
 
-public class User {
+public class UserEntity {
     private final long id;
     private final String login;
     private final String password;
 
 
-    private User(Builder builder) {
+    private UserEntity(Builder builder) {
         id = builder.userId;
         login = builder.userLogin;
         password = builder.userPassword;
@@ -35,7 +35,7 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        UserEntity user = (UserEntity) o;
         return id == user.id &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password);
@@ -75,8 +75,8 @@ public class User {
             return this;
         }
 
-        public User build() {
-            return new User(this);
+        public UserEntity build() {
+            return new UserEntity(this);
         }
     }
 }

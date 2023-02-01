@@ -1,7 +1,7 @@
 package by.webproj.carshowroom.command;
 
 import by.webproj.carshowroom.controller.RequestFactory;
-import by.webproj.carshowroom.entity.User;
+import by.webproj.carshowroom.entity.UserEntity;
 import by.webproj.carshowroom.exception.ServiceError;
 import by.webproj.carshowroom.model.service.UserService;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class LoginCommand implements Command {
         }
         final String login = request.getParameter(LOGIN_REQUEST_PARAM_NAME);
         final String password = request.getParameter(PASSWORD_REQUEST_PARAM_NAME);
-        final Optional<User> userFromDatabase = userService.loginUser(login, password);
+        final Optional<UserEntity> userFromDatabase = userService.loginUser(login, password);
         if (userFromDatabase.isPresent()) {
             request.clearSession();
             request.createSession();
