@@ -22,7 +22,7 @@ public class SimpleUserService implements UserService {
 
 
     @Override
-    public Optional<User> authenticateIfAdmin(String login, String password) {
+    public Optional<User> loginUser(String login, String password) {
         if (!userValidator.validateUserDataByLoginAndPassword(login, password)) {
             return Optional.empty();
         }
@@ -44,34 +44,7 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public Optional<User> authenticateIfClient(String login, String password) {
-        if (!userValidator.validateUserDataByLoginAndPassword(login, password)) {
-            return Optional.empty();
-        }
-        try {
-
-            final Optional<User> userFromDB = userDao.findUserByLogin(login);
-            if (userFromDB.isPresent()) {
-                final User userInstance = userFromDB.get();
-                final String hashedPasswordFromDB = userInstance.getPassword();
-                if (passwordHasher.checkIsEqualsPasswordAndPasswordHash(password, hashedPasswordFromDB)) {
-                    return userFromDB;
-                }
-            }
-        } catch (DaoException daoException) {
-            LOG.error("Cannot authorize user, userLogin: " + login + " userPassword :" + password, daoException);
-            throw new ServiceError("Cannot authorize user, userLogin: " + login + " userPassword :" + password);
-        }
+    public Optional<User> registrationUser(String login, String password) {
         return Optional.empty();
-    }
-
-    @Override
-    public List<User> findAllClients() {
-        try{
-            return userDao.findAllClients();
-        }catch (DaoException e){
-            LOG.error("Cannot find users as clients",e);
-            throw new ServiceError("Cannot find users as clients",e);
-        }
     }
 }

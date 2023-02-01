@@ -10,4 +10,5 @@ public interface UserDao {
 
    Optional<User> findUserByLogin(String login) throws DaoException;
 
+   boolean addUser(String login, String password) throws DaoException;
 }
