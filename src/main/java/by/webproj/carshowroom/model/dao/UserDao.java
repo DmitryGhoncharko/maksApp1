@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
-   User addUser(User user) throws DaoException;
 
    Optional<User> findUserByLogin(String login) throws DaoException;
 
-   List<User> findAllClients() throws DaoException;
 }

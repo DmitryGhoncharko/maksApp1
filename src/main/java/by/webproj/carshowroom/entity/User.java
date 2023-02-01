@@ -7,14 +7,12 @@ public class User {
     private final String login;
     private final String password;
 
-    private final Role userRole;
 
     private User(Builder builder) {
         id = builder.userId;
         login = builder.userLogin;
         password = builder.userPassword;
 
-        userRole = builder.userRole;
     }
 
     public long getId() {
@@ -31,9 +29,7 @@ public class User {
 
 
 
-    public Role getUserRole() {
-        return userRole;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -42,13 +38,12 @@ public class User {
         User user = (User) o;
         return id == user.id &&
                 Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password) &&
-                userRole == user.userRole;
+                Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, userRole);
+        return Objects.hash(id, login, password);
     }
 
     @Override
@@ -57,7 +52,6 @@ public class User {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", userRole=" + userRole +
                 '}';
     }
 
@@ -65,7 +59,6 @@ public class User {
         private long userId;
         private String userLogin;
         private String userPassword;
-        private Role userRole;
 
         public Builder withUserId(long userId) {
             this.userId = userId;
@@ -79,11 +72,6 @@ public class User {
 
         public Builder withUserPassword(String userPassword) {
             this.userPassword = userPassword;
-            return this;
-        }
-
-        public Builder withUserRole(Role userRole) {
-            this.userRole = userRole;
             return this;
         }
 

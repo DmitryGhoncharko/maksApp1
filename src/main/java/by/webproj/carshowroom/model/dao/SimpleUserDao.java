@@ -26,29 +26,6 @@ public class SimpleUserDao implements UserDao {
         this.connectionPool = connectionPool;
     }
 
-    @Override
-    public User addUser(User user) throws DaoException {
-        try (final Connection connection = connectionPool.getConnection(); final PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setLong(3, user.getUserRole().ordinal());
-            final int countCreatedRows = preparedStatement.executeUpdate();
-            final ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (countCreatedRows > 0 && generatedKeys.next()) {
-                return new User.Builder().
-                        withUserId(generatedKeys.getLong(1)).
-                        withUserLogin(user.getLogin()).
-                        withUserPassword(user.getPassword()).
-                        withUserRole(user.getUserRole()).
-                        build();
-            }
-        } catch (SQLException sqlException) {
-            LOG.error("Cannot add user userLogin: " + user.getLogin() + " userPassword: " + user.getPassword() + " userRole: " + user.getUserRole(), sqlException);
-            throw new DaoException("Cannot add user userLogin: " + user.getLogin() + " userPassword: " + user.getPassword() + " userRole: " + user.getUserRole());
-        }
-        LOG.error("Cannot add user userLogin: " + user.getLogin() + " userPassword: " + user.getPassword() + " userRole: " + user.getUserRole());
-        throw new DaoException("Cannot add user userLogin: " + user.getLogin() + " userPassword: " + user.getPassword() + " userRole: " + user.getUserRole());
-    }
 
     @Override
     public Optional<User> findUserByLogin(String login) throws DaoException {
@@ -60,7 +37,6 @@ public class SimpleUserDao implements UserDao {
                         withUserId(resultSet.getLong(1)).
                         withUserLogin(resultSet.getString(2)).
                         withUserPassword(resultSet.getString(3)).
-                        withUserRole(Role.valueOf(resultSet.getString(4))).
                         build());
             }
         } catch (SQLException sqlException) {
@@ -71,24 +47,5 @@ public class SimpleUserDao implements UserDao {
         return Optional.empty();
     }
 
-    @Override
-    public List<User> findAllClients() throws DaoException {
-        final List<User> users = new ArrayList<>();
-        try(final Connection connection = connectionPool.getConnection(); final Statement statement = connection.createStatement()){
-            final ResultSet resultSet = statement.executeQuery(SQL_FIND_ALL_CLIENTS);
-            while (resultSet.next()){
-                final User user = new User.Builder().
-                        withUserId(resultSet.getLong(1)).
-                        withUserLogin(resultSet.getString(2)).
-                        withUserPassword(resultSet.getString(3)).
-                        withUserRole(Role.valueOf(resultSet.getString(4))).
-                        build();
-                users.add(user);
-            }
-        }catch (SQLException e){
-            LOG.error("Cannot find users as clients", e);
-            throw new DaoException("Cannot find users as clients", e);
-        }
-        return users;
-    }
+
 }
