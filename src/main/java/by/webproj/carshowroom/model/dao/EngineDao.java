@@ -16,9 +16,9 @@ public interface EngineDao {
 
     List<EngineEntity> findAllEngines() throws DaoException;
 
-    boolean deleteEngineById() throws DaoException;
+    boolean deleteEngineById(Long id) throws DaoException;
 
-    EngineEntity updateEngine(String engineName, double engineWeight);
+    EngineEntity updateEngine(String engineName, double engineWeight, Long engineId) throws DaoException;
 
 }
 
