@@ -17,9 +17,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SimpleUserDao implements UserDao {
     private static final Logger LOG = LoggerFactory.getLogger(SimpleUserDao.class);
-    private static final String SQL_FIND_USER_BY_LOGIN = "select user_id, user_login, user_password  from  user " + "where user_login = ?";
+    private static final String SQL_FIND_USER_BY_LOGIN = "select user_id, user_login, user_password  from  usert " + "where user_login = ?";
 
-    private static final String SQL_ADD_USER = "insert into user(user_login, user_password) values(?,?)";
+    private static final String SQL_ADD_USER = "insert into usert(user_login, user_password) values(?,?)";
     private final ConnectionPool connectionPool;
 
 

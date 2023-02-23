@@ -1,7 +1,12 @@
 package by.webproj.carshowroom.entity;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@Getter
+@ToString
 public class UserEntity {
     private final long id;
     private final String login;
@@ -14,47 +19,6 @@ public class UserEntity {
         password = builder.userPassword;
 
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity user = (UserEntity) o;
-        return id == user.id &&
-                Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, login, password);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
     public static class Builder {
         private long userId;
         private String userLogin;

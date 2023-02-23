@@ -4,24 +4,24 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
 @EqualsAndHashCode
+@Getter
 @ToString
-public class EngineEntity {
+public class AdditionEntity {
     private final Long id;
-    private final String engineName;
-    private final double engineWeight;
+    private final String additionName;
+    private final double additionWeight;
 
-    private EngineEntity(Builder builder) {
+    private AdditionEntity(Builder builder) {
         id = builder.id;
-        engineName = builder.engineName;
-        engineWeight = builder.engineWeight;
+        additionName = builder.suspensionName;
+        additionWeight = builder.suspensionWeight;
     }
 
     public static class Builder {
         private Long id;
-        private String engineName;
-        private double engineWeight;
+        private String suspensionName;
+        private double suspensionWeight;
 
         public Builder withId(Long id) {
             this.id = id;
@@ -29,17 +29,17 @@ public class EngineEntity {
         }
 
         public Builder withName(String engineName) {
-            this.engineName = engineName;
+            this.suspensionName = engineName;
             return this;
         }
 
         public Builder withWeight(double engineWeight) {
-            this.engineWeight = engineWeight;
+            this.suspensionWeight = engineWeight;
             return this;
         }
 
-        public EngineEntity build() {
-            return new EngineEntity(this);
+        public AdditionEntity build() {
+            return new AdditionEntity(this);
         }
     }
 }
