@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @RequiredArgsConstructor
 @Slf4j
 public class AdditionCarDetailsDao implements CarDetailsDao<AdditionEntity> {
@@ -46,13 +47,9 @@ public class AdditionCarDetailsDao implements CarDetailsDao<AdditionEntity> {
     public Optional<AdditionEntity> findById(Long id) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new AdditionEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new AdditionEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find AdditionEntity by id, id = " + id, e);
@@ -65,13 +62,9 @@ public class AdditionCarDetailsDao implements CarDetailsDao<AdditionEntity> {
     public Optional<AdditionEntity> findByName(String suspensionName) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_NAME)) {
             preparedStatement.setString(1, suspensionName);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new AdditionEntity.Builder().withId(resultSet.getLong(1)).withName(suspensionName).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new AdditionEntity.Builder().withId(resultSet.getLong(1)).withName(suspensionName).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find AdditionEntity by name, name = " + suspensionName, e);
@@ -111,6 +104,9 @@ public class AdditionCarDetailsDao implements CarDetailsDao<AdditionEntity> {
     @Override
     public AdditionEntity update(String suspensionName, double suspensionWeight, Long suspensionId) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ENGINE_BY_ID)) {
+            preparedStatement.setString(1, suspensionName);
+            preparedStatement.setDouble(2, suspensionWeight);
+            preparedStatement.setLong(3, suspensionId);
             int countRowsUpdated = preparedStatement.executeUpdate();
             if (countRowsUpdated > 0) {
                 return new AdditionEntity.Builder().withId(suspensionId).withName(suspensionName).withWeight(suspensionWeight).build();

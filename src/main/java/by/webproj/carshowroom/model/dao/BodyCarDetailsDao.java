@@ -47,14 +47,11 @@ public class BodyCarDetailsDao implements CarDetailsDao<BodyEntity> {
     public Optional<BodyEntity> findById(Long id) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new BodyEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new BodyEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
             }
+
         } catch (SQLException e) {
             log.error("Cannot find body by id, id = " + id, e);
             throw new DaoException("Cannot find body by id, id = " + id, e);
@@ -66,14 +63,11 @@ public class BodyCarDetailsDao implements CarDetailsDao<BodyEntity> {
     public Optional<BodyEntity> findByName(String bodyName) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_NAME)) {
             preparedStatement.setString(1, bodyName);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new BodyEntity.Builder().withId(resultSet.getLong(1)).withName(bodyName).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new BodyEntity.Builder().withId(resultSet.getLong(1)).withName(bodyName).withWeight(resultSet.getDouble(2)).build());
             }
+
         } catch (SQLException e) {
             log.error("Cannot find body by name, name = " + bodyName, e);
             throw new DaoException("Cannot find body by name, name = " + bodyName, e);
@@ -112,6 +106,9 @@ public class BodyCarDetailsDao implements CarDetailsDao<BodyEntity> {
     @Override
     public BodyEntity update(String bodyName, double bodyWeight, Long bodyId) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ENGINE_BY_ID)) {
+            preparedStatement.setString(1, bodyName);
+            preparedStatement.setDouble(2, bodyWeight);
+            preparedStatement.setLong(3, bodyId);
             int countRowsUpdated = preparedStatement.executeUpdate();
             if (countRowsUpdated > 0) {
                 return new BodyEntity.Builder().withId(bodyId).withName(bodyName).withWeight(bodyWeight).build();

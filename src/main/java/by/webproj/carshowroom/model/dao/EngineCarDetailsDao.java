@@ -22,7 +22,7 @@ public class EngineCarDetailsDao implements CarDetailsDao<EngineEntity> {
     private static final String SQL_FIND_ALL_ENGINES = "select carengine_id, carengine_name, carengine_weight from carengine";
     private static final String SQL_DELETE_ENGINE_BY_ID = "delete from carengine where carengine_id = ?";
 
-    private static final String SQL_UPDATE_ENGINE_BY_ID = "update carengine set carengine_name = ?, cerengine_weight = ? where carengine_id = ?";
+    private static final String SQL_UPDATE_ENGINE_BY_ID = "update carengine set carengine_name = ?, carengine_weight = ? where carengine_id = ?";
     private final ConnectionPool connectionPool;
 
     @Override
@@ -49,14 +49,11 @@ public class EngineCarDetailsDao implements CarDetailsDao<EngineEntity> {
     public Optional<EngineEntity> findById(Long id) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new EngineEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new EngineEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
             }
+
         } catch (SQLException e) {
             log.error("Cannot find carengine by id, id = " + id, e);
             throw new DaoException("Cannot find carengine by id, id = " + id, e);
@@ -68,14 +65,12 @@ public class EngineCarDetailsDao implements CarDetailsDao<EngineEntity> {
     public Optional<EngineEntity> findByName(String engineName) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_NAME)) {
             preparedStatement.setString(1, engineName);
-            int countRowsFind = preparedStatement.executeUpdate();
 
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new EngineEntity.Builder().withId(resultSet.getLong(1)).withName(engineName).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new EngineEntity.Builder().withId(resultSet.getLong(1)).withName(engineName).withWeight(resultSet.getDouble(2)).build());
             }
+
         } catch (SQLException e) {
             log.error("Cannot find carengine by name, name = " + engineName, e);
             throw new DaoException("Cannot find carengine by name, name = " + engineName, e);
@@ -114,6 +109,9 @@ public class EngineCarDetailsDao implements CarDetailsDao<EngineEntity> {
     @Override
     public EngineEntity update(String engineName, double engineWeight, Long engineId) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ENGINE_BY_ID)) {
+            preparedStatement.setString(1, engineName);
+            preparedStatement.setDouble(2, engineWeight);
+            preparedStatement.setLong(3, engineId);
             int countRowsUpdated = preparedStatement.executeUpdate();
             if (countRowsUpdated > 0) {
                 return new EngineEntity.Builder().withId(engineId).withName(engineName).withWeight(engineWeight).build();

@@ -67,7 +67,12 @@ public class InitialContext {
                 return new DeleteSuspensionCommand(simpleRequestFactory, suspensionEntityCarDetailsService);
             case "deleteEngine":
                 return new DeleteEngineCommand(simpleRequestFactory, engineEntityCarDetailsService);
-
+            case "getDetailById": {
+                return new GetDetailByTypeIdCommand(simpleRequestFactory, additionEntityCarDetailsService, bodyEntityCarDetailsService, engineEntityCarDetailsService, salonEntityCarDetailsService, separaterlyEntityCarDetailsService, suspensionEntityCarDetailsService);
+            }
+            case "updateDetail": {
+                return new UpdateDetailByIdAndTypeCommand(simpleRequestFactory, additionEntityCarDetailsService, bodyEntityCarDetailsService, engineEntityCarDetailsService, salonEntityCarDetailsService, separaterlyEntityCarDetailsService, suspensionEntityCarDetailsService);
+            }
             default:
                 return new ShowMainPageCommand(simpleRequestFactory);
         }

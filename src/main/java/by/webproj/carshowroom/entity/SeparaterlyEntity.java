@@ -9,13 +9,13 @@ import lombok.ToString;
 @ToString
 public class SeparaterlyEntity {
     private final Long id;
-    private final String sepName;
-    private final double sepWeight;
+    private final String name;
+    private final double weight;
 
     private SeparaterlyEntity(Builder builder) {
         id = builder.id;
-        sepName = builder.suspensionName;
-        sepWeight = builder.suspensionWeight;
+        name = builder.suspensionName;
+        weight = builder.suspensionWeight;
     }
 
     public static class Builder {

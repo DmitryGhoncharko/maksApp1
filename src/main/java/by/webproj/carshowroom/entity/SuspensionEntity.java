@@ -9,12 +9,12 @@ import lombok.ToString;
 @ToString
 public class SuspensionEntity {
     private final Long id;
-    private final String suspensionName;
-    private final double suspensionWeight;
+    private final String name;
+    private final double weight;
     private SuspensionEntity(Builder builder) {
         id = builder.id;
-        suspensionName = builder.suspensionName;
-        suspensionWeight = builder.suspensionWeight;
+        name = builder.suspensionName;
+        weight = builder.suspensionWeight;
     }
     public static class Builder {
         private Long id;

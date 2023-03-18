@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
-public class SeparateCarDetailsDao implements CarDetailsDao<SeparaterlyEntity>{
+public class SeparateCarDetailsDao implements CarDetailsDao<SeparaterlyEntity> {
     private static final String SQL_ADD_ENGINE = "insert into separate(separate_name,separate_weight) values(?,?)";
     private static final String SQL_FIND_ENGINE_BY_ID = "select separate_name, separate_weight from separate where separate_id = ?";
     private static final String SQL_FIND_ENGINE_BY_NAME = "select separate_id, separate_weight from separate where separate_name = ?";
@@ -46,14 +46,11 @@ public class SeparateCarDetailsDao implements CarDetailsDao<SeparaterlyEntity>{
     public Optional<SeparaterlyEntity> findById(Long id) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new SeparaterlyEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new SeparaterlyEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
             }
+
         } catch (SQLException e) {
             log.error("Cannot find sep by id, id = " + id, e);
             throw new DaoException("Cannot find sep by id, id = " + id, e);
@@ -65,13 +62,9 @@ public class SeparateCarDetailsDao implements CarDetailsDao<SeparaterlyEntity>{
     public Optional<SeparaterlyEntity> findByName(String sepName) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_NAME)) {
             preparedStatement.setString(1, sepName);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new SeparaterlyEntity.Builder().withId(resultSet.getLong(1)).withName(sepName).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new SeparaterlyEntity.Builder().withId(resultSet.getLong(1)).withName(sepName).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find sep by name, name = " + sepName, e);
@@ -111,6 +104,9 @@ public class SeparateCarDetailsDao implements CarDetailsDao<SeparaterlyEntity>{
     @Override
     public SeparaterlyEntity update(String sepName, double sepWeight, Long sepId) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ENGINE_BY_ID)) {
+            preparedStatement.setString(1, sepName);
+            preparedStatement.setDouble(2, sepWeight);
+            preparedStatement.setLong(3, sepId);
             int countRowsUpdated = preparedStatement.executeUpdate();
             if (countRowsUpdated > 0) {
                 return new SeparaterlyEntity.Builder().withId(sepId).withName(sepName).withWeight(sepWeight).build();

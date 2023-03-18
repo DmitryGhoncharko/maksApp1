@@ -10,9 +10,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
-public class SuspensionCarDetailsDao implements CarDetailsDao<SuspensionEntity>{
+public class SuspensionCarDetailsDao implements CarDetailsDao<SuspensionEntity> {
     private static final String SQL_ADD_ENGINE = "insert into suspension(suspension_name,suspension_weight) values(?,?)";
     private static final String SQL_FIND_ENGINE_BY_ID = "select suspension_name, suspension_weight from suspension where suspension_id = ?";
     private static final String SQL_FIND_ENGINE_BY_NAME = "select suspension_id, suspension_weight from suspension where suspension_name = ?";
@@ -45,13 +46,9 @@ public class SuspensionCarDetailsDao implements CarDetailsDao<SuspensionEntity>{
     public Optional<SuspensionEntity> findById(Long id) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new SuspensionEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new SuspensionEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find Suspension by id, id = " + id, e);
@@ -64,13 +61,9 @@ public class SuspensionCarDetailsDao implements CarDetailsDao<SuspensionEntity>{
     public Optional<SuspensionEntity> findByName(String suspensionName) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_NAME)) {
             preparedStatement.setString(1, suspensionName);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new SuspensionEntity.Builder().withId(resultSet.getLong(1)).withName(suspensionName).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new SuspensionEntity.Builder().withId(resultSet.getLong(1)).withName(suspensionName).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find Suspension by name, name = " + suspensionName, e);
@@ -110,6 +103,9 @@ public class SuspensionCarDetailsDao implements CarDetailsDao<SuspensionEntity>{
     @Override
     public SuspensionEntity update(String suspensionName, double suspensionWeight, Long suspensionId) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ENGINE_BY_ID)) {
+            preparedStatement.setString(1, suspensionName);
+            preparedStatement.setDouble(2, suspensionWeight);
+            preparedStatement.setLong(3, suspensionId);
             int countRowsUpdated = preparedStatement.executeUpdate();
             if (countRowsUpdated > 0) {
                 return new SuspensionEntity.Builder().withId(suspensionId).withName(suspensionName).withWeight(suspensionWeight).build();

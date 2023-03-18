@@ -10,9 +10,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @RequiredArgsConstructor
 @Slf4j
-public class SalonCarDetailsDao implements CarDetailsDao<SalonEntity>{
+public class SalonCarDetailsDao implements CarDetailsDao<SalonEntity> {
     private static final String SQL_ADD_ENGINE = "insert into salon(salon_name,salon_weight) values(?,?)";
     private static final String SQL_FIND_ENGINE_BY_ID = "select salon_name, salon_weight from salon where salon_id = ?";
     private static final String SQL_FIND_ENGINE_BY_NAME = "select salon_id, salon_weight from salon where salon_name = ?";
@@ -45,13 +46,9 @@ public class SalonCarDetailsDao implements CarDetailsDao<SalonEntity>{
     public Optional<SalonEntity> findById(Long id) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new SalonEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new SalonEntity.Builder().withId(id).withName(resultSet.getString(1)).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find Salon by id, id = " + id, e);
@@ -64,13 +61,9 @@ public class SalonCarDetailsDao implements CarDetailsDao<SalonEntity>{
     public Optional<SalonEntity> findByName(String salonName) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ENGINE_BY_NAME)) {
             preparedStatement.setString(1, salonName);
-            int countRowsFind = preparedStatement.executeUpdate();
-
-            if (countRowsFind > 0) {
-                ResultSet resultSet = preparedStatement.getResultSet();
-                if (resultSet.next()) {
-                    return Optional.of(new SalonEntity.Builder().withId(resultSet.getLong(1)).withName(salonName).withWeight(resultSet.getDouble(2)).build());
-                }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(new SalonEntity.Builder().withId(resultSet.getLong(1)).withName(salonName).withWeight(resultSet.getDouble(2)).build());
             }
         } catch (SQLException e) {
             log.error("Cannot find Salon by name, name = " + salonName, e);
@@ -110,6 +103,9 @@ public class SalonCarDetailsDao implements CarDetailsDao<SalonEntity>{
     @Override
     public SalonEntity update(String salonName, double salonWeight, Long salonId) throws DaoException {
         try (Connection connection = connectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ENGINE_BY_ID)) {
+            preparedStatement.setString(1, salonName);
+            preparedStatement.setDouble(2, salonWeight);
+            preparedStatement.setLong(3, salonId);
             int countRowsUpdated = preparedStatement.executeUpdate();
             if (countRowsUpdated > 0) {
                 return new SalonEntity.Builder().withId(salonId).withName(salonName).withWeight(salonWeight).build();

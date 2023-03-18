@@ -9,13 +9,13 @@ import lombok.ToString;
 @ToString
 public class BodyEntity {
     private final Long id;
-    private final String bodyName;
-    private final double bodyWeight;
+    private final String name;
+    private final double weight;
 
     private BodyEntity(Builder builder) {
         id = builder.id;
-        bodyName = builder.suspensionName;
-        bodyWeight = builder.suspensionWeight;
+        name = builder.suspensionName;
+        weight = builder.suspensionWeight;
     }
 
     public static class Builder {

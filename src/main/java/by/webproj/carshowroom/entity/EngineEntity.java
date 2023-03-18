@@ -9,13 +9,13 @@ import lombok.ToString;
 @ToString
 public class EngineEntity {
     private final Long id;
-    private final String engineName;
-    private final double engineWeight;
+    private final String name;
+    private final double weight;
 
     private EngineEntity(Builder builder) {
         id = builder.id;
-        engineName = builder.engineName;
-        engineWeight = builder.engineWeight;
+        name = builder.engineName;
+        weight = builder.engineWeight;
     }
 
     public static class Builder {
