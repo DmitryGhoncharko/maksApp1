@@ -11,12 +11,12 @@ public class RoleFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        String commandName = httpServletRequest.getParameter("command");
+        String commandName = request.getParameter("command");
         if (httpServletRequest.getSession(false) == null || httpServletRequest.getSession(false).getAttribute("user") == null) {
-            if (commandName == null || !commandName.equals("login") || !commandName.equals("logout") || !commandName.equals("logincmnd") || !commandName.equals("registration") || !commandName.equals("registrationcmnd") || !commandName.equals("/")) {
-                httpServletResponse.sendRedirect("/controller?command=login");
-            }else {
+            if (commandName == null || commandName.equals("login") || commandName.equals("logout") || commandName.equals("logincmnd") || commandName.equals("registration") || commandName.equals("registrationcmnd") || commandName.equals("/")) {
                 chain.doFilter(request,response);
+            }else {
+                httpServletResponse.sendRedirect("/controller?command=login");
             }
         }else {
             chain.doFilter(request, response);
