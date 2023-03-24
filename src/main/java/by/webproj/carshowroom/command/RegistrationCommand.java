@@ -20,6 +20,10 @@ public class RegistrationCommand implements Command {
     public CommandResponse execute(CommandRequest request) throws ServiceError {
         final String login = request.getParameter("login");
         final String password = request.getParameter("password");
+        String code = request.getParameter("code");
+        if(code==null || !code.equals("123456789")){
+            return requestFactory.createRedirectResponse(PagePath.INDEX_PATH.getPath());
+        }
         userService.registrationUser(login, password);
         return requestFactory.createRedirectResponse(PagePath.INDEX_PATH.getPath());
     }

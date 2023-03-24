@@ -69,11 +69,11 @@
                   <label for="exampleInputPassword1">
                     Название детали
                   </label>
-                  <input type="text" class="form-control" name="detailName" id="exampleInputPassword1" />
+                  <input required type="text" class="form-control" name="detailName" id="exampleInputPassword1" />
                   <label for="exampleInputPassword2">
                     Вес детали
                   </label>
-                  <input type="text" class="form-control" name="detailWeight" id="exampleInputPassword2" />
+                  <input required type="text" pattern="^[0-9]*[.,]{0,1}[0-9]+$" class="form-control" name="detailWeight" id="exampleInputPassword2" />
                 </div>
                 <c:if test="${not empty requestScope.error}">
                   <h1>Не получилось добавить деталь.Возможно деталь с таким именем уже существует!</h1>

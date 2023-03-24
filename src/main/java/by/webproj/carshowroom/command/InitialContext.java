@@ -52,7 +52,7 @@ public class InitialContext {
             case "addNewDetail":
                 return new AddDetailCommand(simpleRequestFactory, engineEntityCarDetailsService, suspensionEntityCarDetailsService, bodyEntityCarDetailsService, salonEntityCarDetailsService, separaterlyEntityCarDetailsService, additionEntityCarDetailsService);
             case "task":
-                return new ShowTaskPageCommand(simpleRequestFactory);
+                return new ShowTaskPageCommand(simpleRequestFactory,additionEntityCarDetailsService,bodyEntityCarDetailsService,engineEntityCarDetailsService,salonEntityCarDetailsService,separaterlyEntityCarDetailsService,suspensionEntityCarDetailsService);
             case "allDetails":
                 return new ShowAllDetailsPageCommand(simpleRequestFactory, additionEntityCarDetailsService, bodyEntityCarDetailsService, engineEntityCarDetailsService, salonEntityCarDetailsService, separaterlyEntityCarDetailsService, suspensionEntityCarDetailsService);
             case "deleteAddition":
@@ -72,6 +72,18 @@ public class InitialContext {
             }
             case "updateDetail": {
                 return new UpdateDetailByIdAndTypeCommand(simpleRequestFactory, additionEntityCarDetailsService, bodyEntityCarDetailsService, engineEntityCarDetailsService, salonEntityCarDetailsService, separaterlyEntityCarDetailsService, suspensionEntityCarDetailsService);
+            }
+            case "addToSession":{
+                return new AddToSessionCommand(simpleRequestFactory,additionEntityCarDetailsService,bodyEntityCarDetailsService,engineEntityCarDetailsService,salonEntityCarDetailsService,separaterlyEntityCarDetailsService,suspensionEntityCarDetailsService);
+            }
+            case "clearSes":{
+                return new ClearSessionCommand(simpleRequestFactory);
+            }
+            case "delses":{
+                return new DeleteFromSessionCommand(simpleRequestFactory,additionEntityCarDetailsService,bodyEntityCarDetailsService,engineEntityCarDetailsService,salonEntityCarDetailsService,separaterlyEntityCarDetailsService,suspensionEntityCarDetailsService);
+            }
+            case "deleteByIdAndType":{
+                return new DeleteDetailByIdAndType(simpleRequestFactory,additionEntityCarDetailsService,bodyEntityCarDetailsService,engineEntityCarDetailsService,salonEntityCarDetailsService,separaterlyEntityCarDetailsService,suspensionEntityCarDetailsService);
             }
             default:
                 return new ShowMainPageCommand(simpleRequestFactory);

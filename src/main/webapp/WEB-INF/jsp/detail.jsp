@@ -49,22 +49,22 @@
                     <label for="exampleInputPassword1">
                       Название детали
                     </label>
-                    <input hidden="hidden" name="id" value="${requestScope.id}">
-                  <input hidden="hidden" name="type" value="${requestScope.type}">
-                  <input type="text" class="form-control" value="${requestScope.detail.name}"  name="detailName" id="exampleInputPassword1" />
+                    <input  hidden="hidden" name="id" value="${requestScope.id}">
+                  <input  hidden="hidden" name="type" value="${requestScope.type}">
+                  <input required type="text" class="form-control" value="${requestScope.detail.name}"  name="detailName" id="exampleInputPassword1" />
                   <label for="exampleInputPassword2">
                     Вес детали
                   </label>
-                  <input type="text" class="form-control" value="${requestScope.detail.weight}" name="detailWeight" id="exampleInputPassword2" />
+                  <input required type="text" pattern="^[0-9]*[.,]{0,1}[0-9]+$" class="form-control" value="${requestScope.detail.weight}" name="detailWeight" id="exampleInputPassword2" />
                 </div>
                 <button type="submit" class="btn btn-primary">
                   Обновить деталь
                 </button>
-                <form action="/controller?command=deleteByIdAndType">
-                  <input hidden="hidden" name="id" value="${requestScope.id}">
-                  <input hidden="hidden" name="type" value="${requestScope.type}">
-                  <button type="submit">Удалить деталь</button>
-                </form>
+              </form>
+              <form action="/controller?command=deleteByIdAndType" method="post">
+                <input hidden="hidden" name="id" value="${requestScope.id}">
+                <input hidden="hidden" name="type" value="${requestScope.type}">
+                <button type="submit">Удалить деталь</button>
               </form>
             </div>
           </div>

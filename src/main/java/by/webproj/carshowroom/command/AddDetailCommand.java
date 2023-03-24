@@ -69,12 +69,14 @@ public class AddDetailCommand implements Command {
     }
 
     private double parceWeigthToDouble(String weight) {
-        if (weight.split(",").length > 1) {
-            String[] splitted = weight.split(",");
+        if (weight.trim().split(",").length > 1) {
+            String[] splitted = weight.trim().split(",");
             return Double.parseDouble(splitted[0]) + (Double.parseDouble(splitted[1]) / 10 * splitted[1].length());
-        } else {
-            String[] splitted = weight.split("\\.");
+        } else if(weight.trim().split("\\.").length > 1){
+            String[] splitted = weight.trim().split("\\.");
             return Double.parseDouble(splitted[0]) + (Double.parseDouble(splitted[1]) / 10 * splitted[1].length());
+        }else {
+            return Double.parseDouble(weight.trim());
         }
     }
 }
