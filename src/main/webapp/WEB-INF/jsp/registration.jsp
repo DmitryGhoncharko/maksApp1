@@ -195,9 +195,6 @@
                         Пароль должен быть минимум шесть символов, пароль должен содержать буквы цифры и спец символы
                     </div>
                 </div>
-                <div class="form-group help">
-                    <input type="text" name="code"   class="form-control needs-validation" id="inputPassword1" placeholder="Секретный код" required>
-                </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">

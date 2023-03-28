@@ -6,6 +6,10 @@ import by.webproj.carshowroom.model.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 public class RegistrationCommand implements Command {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationCommand.class);
     private final UserService userService;
@@ -20,10 +24,6 @@ public class RegistrationCommand implements Command {
     public CommandResponse execute(CommandRequest request) throws ServiceError {
         final String login = request.getParameter("login");
         final String password = request.getParameter("password");
-        String code = request.getParameter("code");
-        if(code==null || !code.equals("123456789")){
-            return requestFactory.createRedirectResponse(PagePath.INDEX_PATH.getPath());
-        }
         userService.registrationUser(login, password);
         return requestFactory.createRedirectResponse(PagePath.INDEX_PATH.getPath());
     }

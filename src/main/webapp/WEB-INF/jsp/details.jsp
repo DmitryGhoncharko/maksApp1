@@ -48,6 +48,10 @@
                             <h3 class="text-center">
                                Список добавленных деталей
                             </h3>
+                            <form method="post" action="/controller?command=allDetails">
+                                <input hidden="" value="true" name="sort">
+                                <button type="submit">Сориторовать(по весу)</button>
+                            </form>
                         </div>
                     </div>
                     <div class="row">
@@ -74,6 +78,7 @@
                                 </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
+
                                 <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                     <br>
                                     <br>

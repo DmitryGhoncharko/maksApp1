@@ -68,6 +68,9 @@
                         </div>
                         <div class="col-md-4">
                             <label for="4">Номер  </label> <input type="text" id="4" name="number">
+                            <br>
+                            <br>
+                            <label for="5">Цена  </label> <input type="text" id="5" name="number">
                         </div>
                     </div>
                 </div>
